@@ -77,7 +77,11 @@ function saveState() {
 	try {
 		const round = getCurrentRound();
 		const pendingRoundVotes = round ? currentRoundVotesToStoredObject(round, state.currentRoundVotes) : {};
-		const hasPendingVotes = Object.values(pendingRoundVotes).some((count) => (count || 0) > 0);
+		const hasPendingVotes =
+			!!round &&
+			isVotingOpen(round) &&
+			!state.revealedCorrect &&
+			Object.values(pendingRoundVotes).some((count) => (count || 0) > 0);
 		state.pendingRoundIndex = hasPendingVotes ? state.roundIndex : null;
 		state.pendingRoundVotes = hasPendingVotes ? pendingRoundVotes : {};
 
@@ -99,6 +103,11 @@ function saveState() {
 function resetRoundVotes() {
 	const round = getCurrentRound();
 	state.currentRoundVotes = round ? new Array(round.guesses.length).fill(0) : [];
+}
+
+function clearPendingRoundState() {
+	state.pendingRoundIndex = null;
+	state.pendingRoundVotes = {};
 }
 
 function shuffleDisplayOrder() {
@@ -144,18 +153,15 @@ function forEachRevealGroupButton(callback) {
 function setRevealGroupHidden() {
 	forEachRevealGroupButton((btn) => {
 		btn.style.visibility = "hidden";
-		if (btn !== ui.revealBtn) {
-			btn.classList.remove("reveal-visible");
-		}
+		btn.classList.remove("reveal-visible");
 	});
-	ui.revealBtn.classList.remove("reveal-visible");
 }
 
 function setRevealGroupVisible() {
 	forEachRevealGroupButton((btn) => {
 		btn.style.visibility = "visible";
+		btn.classList.add("reveal-visible");
 	});
-	ui.revealBtn.classList.add("reveal-visible");
 }
 
 function bindEvents() {
@@ -192,6 +198,33 @@ function commitCurrentRoundVotes() {
 	for (let idx = 0; idx < round.guesses.length; idx += 1) {
 		const key = getGuessVoteStorageKey(round, idx);
 		merged[key] = (merged[key] || 0) + (state.currentRoundVotes[idx] || 0);
+	}
+	state.cumulativeVotes[roundKey] = merged;
+	state.roundPlayCounts[roundKey] = (state.roundPlayCounts[roundKey] || 0) + 1;
+}
+
+function commitPendingRoundVotesToStatistics() {
+	if (!Number.isInteger(state.pendingRoundIndex)) {
+		return;
+	}
+
+	const round = rounds[state.pendingRoundIndex];
+	if (!round) {
+		return;
+	}
+
+	const pendingVotes = normalizeStoredRoundVotes(round, state.pendingRoundVotes);
+	const hasVotes = Object.values(pendingVotes).some((count) => (count || 0) > 0);
+	if (!hasVotes) {
+		return;
+	}
+
+	const roundKey = String(state.pendingRoundIndex);
+	const existing = normalizeStoredRoundVotes(round, state.cumulativeVotes[roundKey]);
+	const merged = { ...existing };
+	for (let idx = 0; idx < round.guesses.length; idx += 1) {
+		const key = getGuessVoteStorageKey(round, idx);
+		merged[key] = (merged[key] || 0) + (pendingVotes[key] || 0);
 	}
 	state.cumulativeVotes[roundKey] = merged;
 	state.roundPlayCounts[roundKey] = (state.roundPlayCounts[roundKey] || 0) + 1;
@@ -467,6 +500,7 @@ function revealCorrect() {
 	state.revealedCount = Math.max(state.revealedCount, displayIndex + 1);
 	state.revealedCorrect = true;
 	state.activeGuessIndex = displayIndex;
+	saveState();
 	render();
 }
 
@@ -568,6 +602,9 @@ function handleKeyDown(event) {
 	}
 
 	if (event.key === "ArrowLeft") {
+		if (state.currentRoundVotes.some((count) => count > 0)) {
+			return;
+		}
 		event.preventDefault();
 		stepGuess(-1);
 		return;
@@ -676,11 +713,22 @@ function render() {
 		}
 		const voteCount = state.currentRoundVotes[guessIndex] || 0;
 		const stars = voteCount > 0 ? "★".repeat(voteCount) : "";
+		const revealNotes =
+			state.revealedCorrect &&
+			guess.flag === Correct &&
+			typeof guess.notes === "string" &&
+			guess.notes.trim().length > 0
+				? `
+					<hr class="guess-notes-separator">
+					<p class="guess-notes"><em>${guess.notes}</em></p>
+				`
+				: "";
 
 		return `
 			<article class="${classes.join(" ")}" data-guess-index="${guessIndex}">
 				<div class="guess-index">${idx + 1}</div>
 				<p class="guess-definition">${guess.definition}</p>
+				${revealNotes}
 				<p class="guess-votes">${stars}</p>
 			</article>
 		`;
@@ -717,14 +765,14 @@ function render() {
 	ui.prevRoundBtn.disabled = false;
 	ui.nextRoundBtn.disabled = false;
 	const roundInvalid = state.roundValidationErrors.length > 0;
-	ui.prevGuessBtn.disabled = roundInvalid || state.revealedCount === 0;
+	const hasAnyVotes = state.currentRoundVotes.some((count) => count > 0);
+	ui.prevGuessBtn.disabled = roundInvalid || state.revealedCount === 0 || hasAnyVotes;
 	ui.nextGuessBtn.disabled = roundInvalid || state.revealedCount >= round.guesses.length;
 	const guessNavHidden = state.hintMode === "fifty" || state.hintMode === "monty" || state.hintMode === "hall";
 	ui.prevGuessBtn.style.visibility = guessNavHidden ? "hidden" : "visible";
 	ui.nextGuessBtn.style.visibility = guessNavHidden ? "hidden" : "visible";
 
 	const canAdvanceToHall = Number.isInteger(getCurrentVotedGuessIndex());
-	const hasAnyVotes = state.currentRoundVotes.some((count) => count > 0);
 	if (ui.fiftyFiftyBtn) {
 		ui.fiftyFiftyBtn.disabled = state.hintMode !== "none" || hasAnyVotes;
 	}
@@ -764,6 +812,8 @@ function render() {
 function init() {
 	cacheUi();
 	loadState();
+	commitPendingRoundVotesToStatistics();
+	clearPendingRoundState();
 	bindEvents();
 	setRound(state.roundIndex);
 }
