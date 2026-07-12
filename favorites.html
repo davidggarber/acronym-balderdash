@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Acronym Balderdash - Favorites</title>
+        <style>
+            :root {
+                --bg: #f7f4ea;
+                --panel: #fffdf7;
+                --text: #1f1f1f;
+                --muted: #6e6a60;
+                --outline: #d3c8ac;
+                --accent: #1f4f46;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: #1a1a1d;
+                    --panel: #24242a;
+                    --text: #f0f0f0;
+                    --muted: #b1b1b8;
+                    --outline: #41414c;
+                    --accent: #89c2a6;
+                }
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 16px;
+                font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+                background: var(--bg);
+                color: var(--text);
+            }
+
+            .wrap {
+                width: min(1100px, 100%);
+                margin: 0 auto;
+            }
+
+            h1 {
+                margin: 0 0 10px;
+                letter-spacing: 0.03em;
+            }
+
+            .subtitle {
+                margin: 0 0 18px;
+                color: var(--muted);
+            }
+
+            .toolbar {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 12px;
+            }
+
+            .danger-btn {
+                border: 1px solid #9f2f2f;
+                background: color-mix(in srgb, #9f2f2f 10%, var(--panel));
+                color: var(--text);
+                border-radius: 8px;
+                padding: 7px 12px;
+                font-size: 0.92rem;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+            .danger-btn:hover {
+                background: color-mix(in srgb, #9f2f2f 18%, var(--panel));
+            }
+
+            .summary {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+
+            .summary-card {
+                border: 1px solid var(--outline);
+                background: var(--panel);
+                border-radius: 10px;
+                padding: 10px;
+            }
+
+            .summary-label {
+                color: var(--muted);
+                font-size: 0.9rem;
+            }
+
+            .summary-value {
+                font-size: 1.25rem;
+                font-weight: 700;
+                margin-top: 4px;
+            }
+
+            .round {
+                border: 1px solid var(--outline);
+                background: var(--panel);
+                border-radius: 12px;
+                margin-bottom: 14px;
+                overflow: hidden;
+            }
+
+            .round-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border-bottom: 1px solid var(--outline);
+            }
+
+            .round-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--accent);
+            }
+
+            .round-meta {
+                color: var(--muted);
+                font-size: 0.95rem;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                padding: 8px 10px;
+                text-align: left;
+                border-bottom: 1px solid var(--outline);
+                vertical-align: top;
+            }
+
+            th {
+                font-size: 0.9rem;
+                color: var(--muted);
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            .mono {
+                font-family: Consolas, "Courier New", monospace;
+            }
+
+            .center {
+                text-align: center;
+            }
+
+            .empty {
+                color: var(--muted);
+                border: 1px dashed var(--outline);
+                border-radius: 10px;
+                padding: 14px;
+            }
+
+            @media (max-width: 760px) {
+                .summary {
+                    grid-template-columns: 1fr;
+                }
+
+                th:nth-child(2),
+                td:nth-child(2) {
+                    max-width: 50vw;
+                    word-wrap: break-word;
+                }
+            }
+        </style>
+        <script src="game-data.js"></script>
+    </head>
+    <body>
+        <main class="wrap">
+            <h1>Favorites and Stats</h1>
+            <!--p class="subtitle">Data source: localStorage key <span class="mono">acronym-balderdash-state-v1</span></p-->
+            <div class="toolbar">
+                <button id="resetStateBtn" class="danger-btn" type="button">Reset</button>
+            </div>
+
+            <section id="summary" class="summary"></section>
+            <section id="content"></section>
+        </main>
+
+        <script>
+            const STORAGE_KEY = "acronym-balderdash-state-v1";
+
+            function safeReadState() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (!raw) {
+                        return { roundIndex: 0, pendingRoundIndex: null, pendingRoundVotes: {}, cumulativeVotes: {}, roundPlayCounts: {} };
+                    }
+                    const parsed = JSON.parse(raw);
+                    return {
+                        roundIndex: Number.isInteger(parsed.roundIndex) ? parsed.roundIndex : 0,
+                        pendingRoundIndex: Number.isInteger(parsed.pendingRoundIndex) ? parsed.pendingRoundIndex : null,
+                        pendingRoundVotes:
+                            parsed.pendingRoundVotes && typeof parsed.pendingRoundVotes === "object" ? parsed.pendingRoundVotes : {},
+                        cumulativeVotes: parsed.cumulativeVotes && typeof parsed.cumulativeVotes === "object" ? parsed.cumulativeVotes : {},
+                        roundPlayCounts: parsed.roundPlayCounts && typeof parsed.roundPlayCounts === "object" ? parsed.roundPlayCounts : {},
+                    };
+                } catch (err) {
+                    console.error("Failed to parse saved game state.", err);
+                    return { roundIndex: 0, pendingRoundIndex: null, pendingRoundVotes: {}, cumulativeVotes: {}, roundPlayCounts: {} };
+                }
+            }
+
+            function getGuessVoteStorageKey(round, guessIndex) {
+                const raw =
+                    typeof round?.guesses?.[guessIndex]?.definition === "string"
+                        ? round.guesses[guessIndex].definition.trim()
+                        : "";
+                const base = raw.length > 0 ? raw : "guess-" + (guessIndex + 1);
+                let duplicateCount = 0;
+                for (let i = 0; i < guessIndex; i += 1) {
+                    const prev =
+                        typeof round?.guesses?.[i]?.definition === "string"
+                            ? round.guesses[i].definition.trim()
+                            : "guess-" + (i + 1);
+                    if (prev === base) {
+                        duplicateCount += 1;
+                    }
+                }
+                return duplicateCount === 0 ? base : base + "#" + (duplicateCount + 1);
+            }
+
+            function normalizeStoredRoundVotes(round, stored) {
+                if (Array.isArray(stored)) {
+                    const converted = {};
+                    for (let idx = 0; idx < round.guesses.length; idx += 1) {
+                        const key = getGuessVoteStorageKey(round, idx);
+                        converted[key] = stored[idx] || 0;
+                    }
+                    return converted;
+                }
+
+                if (stored && typeof stored === "object") {
+                    return { ...stored };
+                }
+
+                return {};
+            }
+
+            function renderSummary(state, rounds) {
+                const summary = document.getElementById("summary");
+                const currentRound = rounds[state.roundIndex] ? rounds[state.roundIndex].acronym : "-";
+                let totalVotes = 0;
+
+                for (let i = 0; i < rounds.length; i += 1) {
+                    const round = rounds[i];
+                    const cumulative = normalizeStoredRoundVotes(round, state.cumulativeVotes[String(i)]);
+                    const pending =
+                        state.pendingRoundIndex === i
+                            ? normalizeStoredRoundVotes(round, state.pendingRoundVotes)
+                            : {};
+                    const merged = { ...cumulative };
+                    Object.keys(pending).forEach((k) => {
+                        merged[k] = (merged[k] || 0) + (pending[k] || 0);
+                    });
+
+                    Object.values(merged).forEach((v) => {
+                        totalVotes += Number(v) || 0;
+                    });
+                }
+
+                const playedRounds = Object.keys(state.roundPlayCounts).filter((k) => (state.roundPlayCounts[k] || 0) > 0).length;
+
+                summary.innerHTML = [
+                    ["Current Round", currentRound],
+                    ["Played Rounds", String(playedRounds)],
+                    ["Total Saved Votes", String(totalVotes)],
+                ]
+                    .map(
+                        ([label, value]) =>
+                            '<article class="summary-card"><div class="summary-label">' +
+                            label +
+                            '</div><div class="summary-value">' +
+                            value +
+                            "</div></article>",
+                    )
+                    .join("");
+            }
+
+            function renderContent(state, rounds) {
+                const content = document.getElementById("content");
+                if (!Array.isArray(rounds) || rounds.length === 0) {
+                    content.innerHTML = '<div class="empty">No rounds found in game-data.js.</div>';
+                    return;
+                }
+
+                const html = rounds
+                    .map((round, roundIndex) => {
+                        const roundKey = String(roundIndex);
+                        const playCount = state.roundPlayCounts[roundKey] || 0;
+                        const storedVotes = normalizeStoredRoundVotes(round, state.cumulativeVotes[roundKey]);
+                        const pendingVotes =
+                            state.pendingRoundIndex === roundIndex
+                                ? normalizeStoredRoundVotes(round, state.pendingRoundVotes)
+                                : {};
+
+                        const guessRows = round.guesses
+                            .map((guess, guessIndex) => {
+                                const key = getGuessVoteStorageKey(round, guessIndex);
+                                const voteCount = (storedVotes[key] || 0) + (pendingVotes[key] || 0);
+                                return {
+                                    guessIndex,
+                                    definition: guess.definition || "",
+                                    voteCount,
+                                };
+                            })
+                            .sort((a, b) => a.definition.localeCompare(b.definition, undefined, { sensitivity: "base" }));
+
+                        const roundVoteTotal = guessRows.reduce((sum, row) => sum + (row.voteCount || 0), 0);
+
+                        const rows = guessRows
+                            .map((row) => {
+                                const pct = roundVoteTotal > 0 ? (row.voteCount * 100) / roundVoteTotal : 0;
+                                const pctText = pct.toFixed(1) + "%";
+                                return (
+                                    "<tr>" +
+                                    '<td class="center">' +
+                                    (row.guessIndex + 1) +
+                                    "</td>" +
+                                    "<td>" +
+                                    row.definition +
+                                    "</td>" +
+                                    '<td class="center">' +
+                                    row.voteCount + " (" + pctText + ")" +
+                                    "</td>" +
+                                    "</tr>"
+                                );
+                            })
+                            .join("");
+
+                        return (
+                            '<article class="round">' +
+                            '<div class="round-header">' +
+                            '<div class="round-title">' +
+                            (round.acronym || "(untitled)") +
+                            "</div>" +
+                            '<div class="round-meta">Round ' +
+                            (roundIndex + 1) +
+                            " | Played: " +
+                            playCount +
+                            "</div>" +
+                            "</div>" +
+                            "<table>" +
+                            "<thead><tr><th>#</th><th>Definition</th><th>Votes</th></tr></thead>" +
+                            "<tbody>" +
+                            rows +
+                            "</tbody>" +
+                            "</table>" +
+                            "</article>"
+                        );
+                    })
+                    .join("");
+
+                content.innerHTML = html;
+            }
+
+            function rerenderAll() {
+                const state = safeReadState();
+                const roundsData = Array.isArray(window.rounds) ? window.rounds : [];
+                renderSummary(state, roundsData);
+                renderContent(state, roundsData);
+            }
+
+            function resetLocalState() {
+                const ok = window.confirm("Reset all saved local stats and progress for this game?");
+                if (!ok) {
+                    return;
+                }
+
+                localStorage.removeItem(STORAGE_KEY);
+                rerenderAll();
+            }
+
+            (function init() {
+                const resetBtn = document.getElementById("resetStateBtn");
+                if (resetBtn) {
+                    resetBtn.addEventListener("click", resetLocalState);
+                }
+                rerenderAll();
+            })();
+        </script>
+    </body>
+</html>

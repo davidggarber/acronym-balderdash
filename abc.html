@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Acronym Balderdash Challenge</title>
+        <style>
+            :root {
+                --bg: #f7f4ea;
+                --panel: #fffdf7;
+                --text: #1f1f1f;
+                --muted: #6e6a60;
+                --accent: #1f4f46;
+                --outline: #d3c8ac;
+                --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+                --guess-1: #d84a3a;
+                --guess-2: #dc8a2f;
+                --guess-3: #d8ba2f;
+                --guess-4: #4ca55f;
+                --guess-5: #2c7fc9;
+                --guess-6: #7f52c7;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: #1a1a1d;
+                    --panel: #24242a;
+                    --text: #f0f0f0;
+                    --muted: #b1b1b8;
+                    --accent: #89c2a6;
+                    --outline: #41414c;
+                    --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+                }
+            }
+
+            * {
+                box-sizing: border-box;
+                user-select: none;
+            }
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+                background:
+                    radial-gradient(70vw 45vh at 10% 5%, rgba(76, 165, 95, 0.15), transparent 50%),
+                    radial-gradient(70vw 45vh at 90% 0%, rgba(44, 127, 201, 0.2), transparent 45%),
+                    var(--bg);
+                color: var(--text);
+                font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+                display: flex;
+                justify-content: center;
+                padding: 16px;
+            }
+
+            .app {
+                width: min(1080px, 100%);
+                background: color-mix(in srgb, var(--panel) 90%, transparent);
+                border: 1px solid var(--outline);
+                border-radius: 16px;
+                box-shadow: var(--shadow);
+                padding: 14px;
+                display: grid;
+                grid-template-rows: auto auto 1fr auto;
+                gap: 12px;
+            }
+
+            .top-row {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .top-row .controls:last-child {
+                justify-content: flex-end;
+            }
+
+            #roundLabel {
+                font-size: 1.05rem;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                text-align: center;
+            }
+
+            .header-title {
+                margin: 0;
+                text-align: center;
+                padding: 8px 12px;
+                border-radius: 12px;
+                border: 1px solid var(--outline);
+                font-size: clamp(3.6rem, 10vw, 6.6rem);
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                text-shadow: 0 0 16px rgba(92, 175, 147, 0.25);
+                background: linear-gradient(90deg, rgba(31, 79, 70, 0.15), rgba(31, 79, 70, 0.03));
+            }
+
+            .controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            button {
+                border: 1px solid var(--outline);
+                background: var(--panel);
+                color: var(--text);
+                padding: 3px 10px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 2rem;
+                font-weight: 700;
+                height: 1in;
+            }
+
+            #revealBtn {
+                opacity: 0;
+                transform: translateY(8px) scale(0.96);
+                transition: opacity 220ms ease, transform 220ms ease;
+            }
+
+            #revealBtn.reveal-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            button:hover:enabled {
+                transform: translateY(-1px);
+            }
+
+            button:disabled {
+                opacity: 0.45;
+                cursor: default;
+            }
+
+            .guess-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+                align-content: start;
+                min-height: 50vh;
+            }
+
+            .guess-card {
+                border: 2px solid var(--outline);
+                border-radius: 12px;
+                padding: 10px;
+                min-height: 160px;
+                display: grid;
+                grid-template-rows: auto 1fr;
+                gap: 8px;
+                opacity: 0.95;
+                transform-origin: center;
+                position: relative;
+            }
+
+            .guess-card.hidden {
+                visibility: hidden;
+            }
+
+            .guess-card.filtered-out {
+                filter: none;
+                opacity: 0.5;
+                pointer-events: none;
+                color: color-mix(in srgb, var(--text) 55%, gray);
+                border-color: color-mix(in srgb, var(--outline) 85%, gray);
+            }
+
+            .guess-card.filtered-out::after {
+                content: "X";
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #7f0f0f;
+                font-size: clamp(4rem, 9vw, 7rem);
+                font-weight: 900;
+                text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+                pointer-events: none;
+            }
+
+            .guess-card.hall-eliminated {
+                filter: none;
+                opacity: 0.5;
+                pointer-events: none;
+                color: color-mix(in srgb, var(--text) 55%, gray);
+                border-color: color-mix(in srgb, var(--outline) 85%, gray);
+            }
+
+            .guess-card.hall-eliminated::after {
+                content: "🐐";
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: clamp(3.2rem, 7vw, 5.6rem);
+                filter: saturate(0.85);
+                text-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+                pointer-events: none;
+            }
+
+            .guess-card.active {
+                animation: intro 520ms ease;
+                z-index: 2;
+                box-shadow: var(--shadow);
+            }
+
+            @keyframes intro {
+                from {
+                    transform: scale(1.9) translateY(18px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: scale(1) translateY(0);
+                    opacity: 0.95;
+                }
+            }
+
+            .guess-index {
+                font-weight: 800;
+                font-size: 0.95rem;
+                opacity: 0.9;
+            }
+
+            .guess-definition {
+                margin: 0;
+                text-align: center;
+                font-size: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .guess-votes {
+                margin: 0;
+                text-align: center;
+                font-size: 1.25rem;
+                min-height: 1.4em;
+                letter-spacing: 0.15em;
+            }
+
+            .guess-card.vote-enabled {
+                cursor: pointer;
+            }
+
+            .guess-card.odd-tail {
+                grid-column: 1 / -1;
+                justify-self: center;
+                width: calc((100% - 10px) / 2);
+            }
+
+            .guess-1 { background: color-mix(in srgb, var(--guess-1) 18%, transparent); }
+            .guess-2 { background: color-mix(in srgb, var(--guess-2) 18%, transparent); }
+            .guess-3 { background: color-mix(in srgb, var(--guess-3) 18%, transparent); }
+            .guess-4 { background: color-mix(in srgb, var(--guess-4) 18%, transparent); }
+            .guess-5 { background: color-mix(in srgb, var(--guess-5) 18%, transparent); }
+            .guess-6 { background: color-mix(in srgb, var(--guess-6) 18%, transparent); }
+
+            .guess-card.correct {
+                border-color: color-mix(in srgb, var(--guess-4) 75%, white);
+                animation: reveal 480ms ease;
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--guess-4) 25%, transparent);
+            }
+
+            .guess-card.incorrect {
+                filter: grayscale(0.95);
+                opacity: 0.45;
+                border-color: color-mix(in srgb, var(--outline) 80%, gray);
+            }
+
+            @keyframes reveal {
+                from {
+                    transform: scale(1);
+                }
+
+                40% {
+                    transform: scale(1.4);
+                }
+
+                to {
+                    transform: scale(1);
+                }
+            }
+
+            #statusLabel {
+                text-align: center;
+                min-height: 1.4em;
+                color: var(--muted);
+                font-size: 1rem;
+                font-weight: 700;
+            }
+
+            @media (max-width: 740px) {
+                .guess-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+        <script src="game-data.js"></script>
+        <script src="game.js" defer></script>
+    </head>
+    <body>
+        <main class="app">
+            <div class="top-row">
+                <div class="controls">
+                    <button id="prevGuessBtn" type="button">⏮️</button>
+                    <button id="nextGuessBtn" type="button">⏭️</button>
+                    <button id="revealBtn" type="button">🏅</button>
+                    <button id="5050Btn" type="button">⚖️</button>
+                    <button id="montyHallBtn" type="button">🚪</button>
+                </div>
+                <div id="roundLabel">Round</div>
+                <div class="controls">
+                    <button id="prevRoundBtn" type="button">Round -</button>
+                    <button id="nextRoundBtn" type="button">Round +</button>
+                </div>
+            </div>
+
+            <h1 id="acronymLabel" class="header-title">ACRONYM</h1>
+
+            <section id="guessGrid" class="guess-grid" aria-live="polite"></section>
+
+            <div id="statusLabel"></div>
+        </main>
+    </body>
+</html>
