@@ -1,11 +1,11 @@
 addRound(document.currentScript, {
-    acronym: "LOSER",
+    acronym: "PUMA",
     guesses: [
         {
-            definition: "Loose Organization of Surreal Ethereal Realists",
+            definition: "Programmable Universal Machine for Assembly",
             author: "",
             flag: Correct,
-            notes: "A music festival in Pittsburgh, PA"
+            notes: "An industrial robot arm",
         },
         {
             definition: "",

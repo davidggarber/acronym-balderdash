@@ -5,6 +5,7 @@ addRound(document.currentScript, {
             definition: "",
             author: "",
             flag: Correct,
+            notes: "",
         },
         {
             definition: "",

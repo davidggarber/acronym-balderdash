@@ -5,6 +5,7 @@ addRound(document.currentScript, {
             definition: "Zurich Extragalactic Bayesian Redshift Analyzer",
             author: "",
             flag: Correct,
+            notes: "A photo-metric tool for measuring the redshift of other galaxies"
         },
         {
             definition: "",

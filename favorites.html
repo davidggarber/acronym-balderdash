@@ -129,6 +129,19 @@
             table {
                 width: 100%;
                 border-collapse: collapse;
+                table-layout: fixed;
+            }
+
+            col.col-index {
+                width: 56px;
+            }
+
+            col.col-author {
+                width: 180px;
+            }
+
+            col.col-votes {
+                width: 130px;
             }
 
             th,
@@ -313,6 +326,7 @@
                                 return {
                                     guessIndex,
                                     definition: guess.definition || "",
+                                    author: guess.author || "",
                                     voteCount,
                                 };
                             })
@@ -331,6 +345,9 @@
                                     "</td>" +
                                     "<td>" +
                                     row.definition +
+                                    "</td>" +
+                                    "<td>" +
+                                    row.author +
                                     "</td>" +
                                     '<td class="center">' +
                                     row.voteCount + " (" + pctText + ")" +
@@ -353,7 +370,8 @@
                             "</div>" +
                             "</div>" +
                             "<table>" +
-                            "<thead><tr><th>#</th><th>Definition</th><th>Votes</th></tr></thead>" +
+                            '<colgroup><col class="col-index"><col class="col-definition"><col class="col-author"><col class="col-votes"></colgroup>' +
+                            "<thead><tr><th>#</th><th>Definition</th><th>Author</th><th>Votes</th></tr></thead>" +
                             "<tbody>" +
                             rows +
                             "</tbody>" +

@@ -1,11 +1,11 @@
 addRound(document.currentScript, {
-    acronym: "LOSER",
+    acronym: "CODEX",
     guesses: [
         {
-            definition: "Loose Organization of Surreal Ethereal Realists",
+            definition: "Centerband Only Detection of EXchange",
             author: "",
             flag: Correct,
-            notes: "A music festival in Pittsburgh, PA"
+            notes: "A step in Nuclear Magnetic Resonance (NMR) spectroscopy"
         },
         {
             definition: "",

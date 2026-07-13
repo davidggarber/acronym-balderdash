@@ -1,11 +1,11 @@
 addRound(document.currentScript, {
-    acronym: "LOSER",
+    acronym: "LLAMA",
     guesses: [
         {
-            definition: "Loose Organization of Surreal Ethereal Realists",
+            definition: "Language Learning and Meaning Acquisition",
             author: "",
             flag: Correct,
-            notes: "A music festival in Pittsburgh, PA"
+            notes: "The name of language labs at universities including Purdue and Trier",
         },
         {
             definition: "",

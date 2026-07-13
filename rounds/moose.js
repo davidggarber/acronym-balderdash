@@ -1,10 +1,11 @@
 addRound(document.currentScript, {
-    acronym: "LOGIC",
+    acronym: "MOOSE",
     guesses: [
         {
-            definition: "Layout Optimization with Guillotine Induced Cuts",
+            definition: "Multiscale Object-Oriented Simulation Environment",
             author: "",
             flag: Correct,
+            notes: "Open source software",
         },
         {
             definition: "",

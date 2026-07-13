@@ -5,6 +5,7 @@ addRound(document.currentScript, {
             definition: "Requirements Envisaging By Utilizing Scenarios",
             author: "",
             flag: Correct,
+            notes: "An approach to requirements engineering"
         },
         {
             definition: "",

@@ -1,10 +1,11 @@
 addRound(document.currentScript, {
-    acronym: "RHINO",
+    acronym: "IGUANA",
     guesses: [
         {
-            definition: "",
+            definition: "Independent Group of Unix-Alikes and Network Activists",
             author: "",
             flag: Correct,
+            notes: "Unix group in Belgium",
         },
         {
             definition: "",
