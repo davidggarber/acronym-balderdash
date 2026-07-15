@@ -8,26 +8,26 @@ addRound(document.currentScript, {
             notes: "An approach to requirements engineering"
         },
         {
-            definition: "",
-            author: "",
+            definition: "Real Estate Buyers Understand Sales",
+            author: "David G",
             flag: CoinFlip,
         },
         {
-            definition: "",
-            author: "",
+            definition: "Riddle Embedding Broadly Understood Symbols",
+            author: "Chris J",
             flag: MontyHall,
         },
         {
-            definition: "",
-            author: "",
+            definition: "Recumbent Electric Bicyclists of the United States",
+            author: "Andrew G",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Read English Before Understanding Science",
+            author: "Tejas W",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Random Elvish Babble Under-Study",
+            author: "David G",
         }
     ]
 });

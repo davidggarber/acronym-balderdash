@@ -25,5 +25,9 @@ addRound(document.currentScript, {
             definition: "Synchronized Teamwork Acceleration & Momentum Plan",
             author: "Github Copilot",
         },
+        {
+            definition: "Strategic Task Alignment & Management Portal",
+            author: "Tejas",
+        },
     ]
 });

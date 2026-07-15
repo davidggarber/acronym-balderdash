@@ -8,25 +8,25 @@ addRound(document.currentScript, {
             notes: "The club has been active since 1992"
         },
         {
-            definition: "asdf",
+            definition: "Big Eaters Are Really Scary",
             author: "",
             flag: CoinFlip,
         },
         {
-            definition: "",
+            definition: "Bracketed Entries Are Recommended for Storage",
             author: "",
             flag: MontyHall,
         },
         {
-            definition: "",
+            definition: "Boston Eastside Art Ratings System",
             author: "",
         },
         {
-            definition: "",
+            definition: "Basic Education in Algebra, Reasoning & Science",
             author: "",
         },
         {
-            definition: "",
+            definition: "Behind Every Agent Resides a Sub-agent",
             author: "",
         }
     ]

@@ -8,26 +8,26 @@ addRound(document.currentScript, {
             notes: "A degree offered by the Universities of Lancaster and Birmingham"
         },
         {
-            definition: "",
-            author: "",
+            definition: "Meeting Of Really Smart Employees",
+            author: "Tejas W",
             flag: CoinFlip,
         },
         {
-            definition: "",
-            author: "",
+            definition: "Most Offered Return Super Employee",
+            author: "Stephanie H",
             flag: MontyHall,
         },
         {
-            definition: "",
-            author: "",
+            definition: "My Only Regret: Sealing Envelopes",
+            author: "Rorke H",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Mob Of Romanian Speakers of English",
+            author: "Steve M",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Most Original Really Simple Encoding",
+            author: "Chris J",
         }
     ]
 });
