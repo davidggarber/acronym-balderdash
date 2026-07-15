@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Centerband Only Detection of EXchange",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "A step in Nuclear Magnetic Resonance (NMR) spectroscopy"
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

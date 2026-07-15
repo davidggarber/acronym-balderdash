@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Service Corps Of Retired Executives",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "A business mentoring non-profit",
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

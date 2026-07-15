@@ -1,7 +1,3 @@
-const Correct = 1;
-const CoinFlip = 2;
-const MontyHall = 3;
-
 const rounds = [];
 
 const acronyms = {};
@@ -34,17 +30,10 @@ function addRound(script, round) {
     else if (!round.guesses.every(guess => guess.definition.trim().length > 0)) {
         console.warn(`${round.acronym} : Empty guess definition`);
     }
-    else if (!round.guesses.some(guess => guess.flag === Correct)) {
+    else if (!round.guesses.some(guess => guess.correct)) {
         console.warn(`${round.acronym} : No correct guess`);
     }
     else {
-        // Valid, but extra checks for optional flags
-        if (!round.guesses.some(guess => guess.flag === CoinFlip)) {
-            console.log(`${round.acronym} : No coin flip guess`);
-        }
-        if (!round.guesses.some(guess => guess.flag === MontyHall)) {
-            console.log(`${round.acronym} : No Monty Hall guess`);
-        }
         rounds.push(round);
         console.log(`${round.acronym} : Playable as round ${rounds.length}`);
     }

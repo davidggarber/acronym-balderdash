@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Strategies of Limiting Violent Episodes",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "Crisis management group in Mansfield, Maryland",
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

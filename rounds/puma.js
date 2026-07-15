@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Programmable Universal Machine for Assembly",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "An industrial robot arm",
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

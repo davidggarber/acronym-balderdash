@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Requirements Envisaging By Utilizing Scenarios",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "An approach to requirements engineering"
         },
         {
             definition: "Real Estate Buyers Understand Sales",
             author: "David G",
-            flag: CoinFlip,
         },
         {
             definition: "Riddle Embedding Broadly Understood Symbols",
             author: "Chris J",
-            flag: MontyHall,
         },
         {
             definition: "Recumbent Electric Bicyclists of the United States",

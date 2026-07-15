@@ -12,12 +12,10 @@ addRound(document.currentScript, {
         {
             definition: "Tea‑Infused Gourmet Eating Ritual",
             author: "Github Copilot",
-            flag: CoinFlip,
         },
         {
             definition: "Terribly Impractical Gadget for Eliminating Rodents",
             author: "Github Copilot",
-            flag: MontyHall,
         },
         {
             definition: "Teamwide Incentive Governance for Enhanced Results",
@@ -26,7 +24,7 @@ addRound(document.currentScript, {
         {
             definition: "The Internet Gateway and E-Mail Router",
             author: "Github Copilot",
-            flag: Correct,
+            correct: true,
         }
     ]
 });

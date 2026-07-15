@@ -3,30 +3,28 @@ addRound(document.currentScript, {
     guesses: [
         {
             definition: "Standard Air Munitions Package",
-            author: "Github Copilot",
-            flag: Correct,
+            author: "",
+            correct: true,
             notes: "When the military uses a standardized palette for its bombs"
         },
         {
             definition: "Standardized Token for Authenticating Mailed Parcels",
-            author: "Github Copilot",
+            author: "Copilot",
         },
         {
             definition: "Semi‑Tacky Adhesive for Mandatory Postage",
-            author: "Github Copilot",
-            flag: CoinFlip,
+            author: "Copilot",
         },
         {
             definition: "Symbolic Tag Applied to Meaningless Paperwork",
-            author: "Github Copilot",
-            flag: MontyHall,
+            author: "Copilot",
         },
         {
-            definition: "Synchronized Teamwork Acceleration & Momentum Plan",
-            author: "Github Copilot",
+            definition: "Synchronized Teamwork Acceleration & Momentum Plan",
+            author: "Copilot",
         },
         {
-            definition: "Strategic Task Alignment & Management Portal",
+            definition: "Strategic Task Alignment & Management Portal",
             author: "Tejas",
         },
     ]

@@ -4,7 +4,7 @@ addRound(document.currentScript, {
         {
             definition: "Stray and Feral Animal Rescue Initiative",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "An animal group in DeKalb, Illinois"
         },
         {
@@ -16,14 +16,12 @@ addRound(document.currentScript, {
             author: "Copilot",
         },
         {
-            definition: "Semi‑Automated Fauna Analysis & Reconnaissance Interface",
+            definition: "Semi‑Automated Fauna Analysis & Reconnaissance Interface",
             author: "Copilot",
-            flag: CoinFlip,
         },
         {
             definition: "Seasonal Adventure For Amateur Road‑trippers International",
             author: "Copilot",
-            flag: MontyHall,
         },
         {
             definition: "Surveyors’ Atlas For Assessing Regional Inhabitants",

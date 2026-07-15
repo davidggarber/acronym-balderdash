@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Loose Organization of Surreal Ethereal Realists",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "A music festival in Pittsburgh, PA"
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

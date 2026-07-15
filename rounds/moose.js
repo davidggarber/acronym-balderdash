@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Multiscale Object-Oriented Simulation Environment",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "Open source software",
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

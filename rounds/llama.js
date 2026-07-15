@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Language Learning and Meaning Acquisition",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "The name of language labs at universities including Purdue and Trier",
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

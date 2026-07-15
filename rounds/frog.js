@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Ferry Riders Opinion Group",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "",
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

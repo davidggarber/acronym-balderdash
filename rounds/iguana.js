@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Independent Group of Unix-Alikes and Network Activists",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "Unix group in Belgium",
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

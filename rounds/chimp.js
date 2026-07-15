@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Center for Human Intelligence and Moral Purpose",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "Small group based in Seattle, WA"
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",

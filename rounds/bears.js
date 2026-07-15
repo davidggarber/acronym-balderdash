@@ -4,18 +4,16 @@ addRound(document.currentScript, {
         {
             definition: "Boeing Employees Amateur Radio Society",
             author: "",
-            flag: Correct,
+            correct: true,
             notes: "The club has been active since 1992"
         },
         {
             definition: "Big Eaters Are Really Scary",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "Bracketed Entries Are Recommended for Storage",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "Boston Eastside Art Ratings System",

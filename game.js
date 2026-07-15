@@ -8,7 +8,7 @@ const state = {
 	activeGuessIndex: -1,
 	displayOrder: [],
 	hintMode: "none",
-	hallHiddenGuessIndex: null,
+	hallHiddenGuessIndices: [],
 	lastVotedGuessIndex: null,
 	roundValidationErrors: [],
 	revealButtonVisible: false,
@@ -33,6 +33,11 @@ const ui = {
 	fiftyFiftyBtn: null,
 	montyHallBtn: null,
 };
+
+const experiments = {
+	fiftyFifty: false,
+	montyHall: true,
+}
 
 function getRoundCount() {
 	return Array.isArray(rounds) ? rounds.length : 0;
@@ -138,8 +143,18 @@ function cacheUi() {
 	ui.prevGuessBtn = document.getElementById("prevGuessBtn");
 	ui.nextGuessBtn = document.getElementById("nextGuessBtn");
 	ui.revealBtn = document.getElementById("revealBtn");
-	ui.fiftyFiftyBtn = document.getElementById("5050Btn");
-	ui.montyHallBtn = document.getElementById("montyHallBtn");
+	if (experiments.fiftyFifty) {
+		ui.fiftyFiftyBtn = document.getElementById("5050Btn");
+	}
+	else {
+		document.getElementById("5050Btn").style.display = "none";
+	}
+	if (experiments.montyHall) {
+		ui.montyHallBtn = document.getElementById("montyHallBtn");
+	}
+	else {
+		document.getElementById("montyHallBtn").style.display = "none";
+	}
 }
 
 function forEachRevealGroupButton(callback) {
@@ -165,8 +180,8 @@ function setRevealGroupVisible() {
 }
 
 function bindEvents() {
-	ui.prevRoundBtn.addEventListener("click", () => setRound(state.roundIndex - 1));
-	ui.nextRoundBtn.addEventListener("click", () => moveToNextRound());
+	ui.prevRoundBtn.addEventListener("click", (event) => moveToPreviousRound(event));
+	ui.nextRoundBtn.addEventListener("click", (event) => moveToNextRound(event));
 	ui.prevGuessBtn.addEventListener("click", () => stepGuess(-1));
 	ui.nextGuessBtn.addEventListener("click", () => stepGuess(1));
 	ui.revealBtn.addEventListener("click", revealCorrect);
@@ -302,7 +317,7 @@ function validateRound(round) {
 			}
 		}
 
-		const hasCorrect = round.guesses.some((guess) => guess?.flag === Correct);
+		const hasCorrect = round.guesses.some((guess) => !!guess?.correct);
 		if (!hasCorrect) {
 			errors.push("Round must have at least one guess flagged Correct.");
 		}
@@ -324,7 +339,7 @@ function setRound(nextIndex) {
 	state.revealedCorrect = false;
 	state.activeGuessIndex = -1;
 	state.hintMode = "none";
-	state.hallHiddenGuessIndex = null;
+	state.hallHiddenGuessIndices = [];
 	state.lastVotedGuessIndex = null;
 	if (state.revealShowTimer !== null) {
 		window.clearTimeout(state.revealShowTimer);
@@ -364,7 +379,7 @@ function stepGuess(direction) {
 	state.activeGuessIndex = direction > 0 && nextCount > 0 ? nextCount - 1 : -1;
 	if (nextCount < maxGuesses) {
 		state.hintMode = "none";
-		state.hallHiddenGuessIndex = null;
+		state.hallHiddenGuessIndices = [];
 	}
 	render();
 }
@@ -375,14 +390,28 @@ function applyFiftyFifty() {
 		return;
 	}
 
-	const ok = window.confirm("Use 50/50 hint? Continue?");
+	const bypassConfirm = !!triggerEvent && (triggerEvent.shiftKey || triggerEvent.ctrlKey);
+	const ok = bypassConfirm ||window.confirm("Use 50/50 hint? Continue?");
 	if (!ok) {
 		return;
 	}
 
 	state.hintMode = "fifty";
-	state.hallHiddenGuessIndex = null;
+	state.hallHiddenGuessIndices = [];
 	render();
+}
+
+function getTotalVoteCount() {
+	return state.currentRoundVotes.reduce((sum, count) => sum + count, 0);
+}
+
+function canShowMontyHallButton(round) {
+	if (!round || !isVotingOpen(round) || state.hintMode === "hall") {
+		return false;
+	}
+
+	const voteCount = getTotalVoteCount();
+	return voteCount >= 1 && voteCount < round.guesses.length - 2;
 }
 
 function getCurrentVotedGuessIndex() {
@@ -404,33 +433,35 @@ function getCurrentVotedGuessIndex() {
 	return fallback >= 0 ? fallback : null;
 }
 
-function getFlaggedGuessIndex(round, flagValue) {
-	return round.guesses.findIndex((guess) => guess.flag === flagValue);
+function pickRandomSample(values, count) {
+	const pool = [...values];
+	for (let i = pool.length - 1; i > 0; i -= 1) {
+		const j = Math.floor(Math.random() * (i + 1));
+		const tmp = pool[i];
+		pool[i] = pool[j];
+		pool[j] = tmp;
+	}
+
+	return pool.slice(0, Math.max(0, Math.min(count, pool.length)));
 }
 
-function computeHallHiddenGuessIndex(round) {
-	const votedIndex = getCurrentVotedGuessIndex();
-	if (!Number.isInteger(votedIndex)) {
-		return null;
+function computeHallHiddenGuessIndices(round) {
+	const voteCount = getTotalVoteCount();
+	const targetCount = Math.max(0, round.guesses.length - voteCount - 2);
+	if (targetCount === 0) {
+		return [];
 	}
 
-	const votedGuess = round.guesses[votedIndex];
-	const coinFlipIndex = getFlaggedGuessIndex(round, CoinFlip);
-	const montyIndex = getFlaggedGuessIndex(round, MontyHall);
-
-	if (votedGuess.flag === Correct) {
-		return montyIndex >= 0 ? montyIndex : null;
+	const candidates = [];
+	for (let idx = 0; idx < round.guesses.length; idx += 1) {
+		const hasVotes = (state.currentRoundVotes[idx] || 0) > 0;
+		const isCorrect = !!round.guesses[idx].correct;
+		if (!hasVotes && !isCorrect) {
+			candidates.push(idx);
+		}
 	}
 
-	if (votedGuess.flag === CoinFlip) {
-		return montyIndex >= 0 ? montyIndex : null;
-	}
-
-	if (votedGuess.flag === MontyHall) {
-		return coinFlipIndex >= 0 ? coinFlipIndex : null;
-	}
-
-	return montyIndex >= 0 ? montyIndex : null;
+	return pickRandomSample(candidates, targetCount);
 }
 
 function handleMontyHallClick() {
@@ -438,37 +469,17 @@ function handleMontyHallClick() {
 	if (!round || !isVotingOpen(round)) {
 		return;
 	}
-
-	if (state.hintMode === "none") {
-		const ok = window.confirm("Use Monty Hall hint? Continue?");
-		if (!ok) {
-			return;
-		}
-
-		state.hintMode = "monty";
-		state.hallHiddenGuessIndex = null;
-		render();
-		return;
-	}
-
-	if (state.hintMode !== "monty") {
-		return;
-	}
-
-	const votedIndex = getCurrentVotedGuessIndex();
-	if (!Number.isInteger(votedIndex)) {
-		ui.statusLabel.textContent = "Monty Hall: place a vote before opening Hall mode.";
+	if (!canShowMontyHallButton(round)) {
 		return;
 	}
 
 	state.hintMode = "hall";
-	state.hallHiddenGuessIndex = computeHallHiddenGuessIndex(round);
-	state.lastVotedGuessIndex = votedIndex;
+	state.hallHiddenGuessIndices = computeHallHiddenGuessIndices(round);
 	render();
 }
 
 function getCorrectIndex(round) {
-	return round.guesses.findIndex((guess) => guess.flag === Correct);
+	return round.guesses.findIndex((guess) => guess.correct);
 }
 
 function revealCorrect() {
@@ -479,7 +490,8 @@ function revealCorrect() {
 
 	const totalVotes = state.currentRoundVotes.reduce((sum, count) => sum + count, 0);
 	if (totalVotes === 0) {
-		const ok = window.confirm("No votes have been cast. Reveal anyway?");
+		const bypassConfirm = !!triggerEvent && (triggerEvent.shiftKey || triggerEvent.ctrlKey);
+		const ok = bypassConfirm || window.confirm("No votes have been cast. Reveal anyway?");
 		if (!ok) {
 			return;
 		}
@@ -504,9 +516,10 @@ function revealCorrect() {
 	render();
 }
 
-function moveToNextRound() {
-	if (state.revealedCount > 0 && !state.revealedCorrect) {
-		const ok = window.confirm("Reveal has not been used yet. Continue to next round?");
+function moveToNextRound(triggerEvent) {
+	const bypassConfirm = !!triggerEvent && (triggerEvent.shiftKey || triggerEvent.ctrlKey);
+	if (state.revealedCount > 0 && !state.revealedCorrect && !bypassConfirm) {
+		const ok = window.confirm("Continue to next round without revealing?");
 		if (!ok) {
 			return;
 		}
@@ -515,24 +528,72 @@ function moveToNextRound() {
 	setRound(state.roundIndex + 1);
 }
 
+function restartCurrentRound() {
+	const round = getCurrentRound();
+	if (!round) {
+		return;
+	}
+
+	state.revealedCount = 0;
+	state.revealedCorrect = false;
+	state.activeGuessIndex = -1;
+	state.hintMode = "none";
+	state.hallHiddenGuessIndices = [];
+	state.lastVotedGuessIndex = null;
+	if (state.revealShowTimer !== null) {
+		window.clearTimeout(state.revealShowTimer);
+		state.revealShowTimer = null;
+	}
+	state.revealButtonVisible = false;
+	resetRoundVotes();
+	shuffleDisplayOrder();
+	state.roundValidationErrors = validateRound(round);
+	if (state.roundValidationErrors.length > 0) {
+		console.error(`Round ${state.roundIndex + 1} is invalid: ${state.roundValidationErrors.join(" ")}`);
+	}
+	saveState();
+	render();
+}
+
+function moveToPreviousRound(triggerEvent) {
+	const round = getCurrentRound();
+	if (!round) {
+		return;
+	}
+
+	// Restart only when the round has started but is not yet complete.
+	const inProgress = state.revealedCount > 0 && !state.revealedCorrect;
+	if (inProgress) {
+		const bypassRestart = !!triggerEvent && (triggerEvent.shiftKey || triggerEvent.ctrlKey);
+		if (!bypassRestart) {
+			const ok = window.confirm("Abort this round?");
+			if (!ok) {
+				return;
+			}
+		}
+
+		restartCurrentRound();
+		return;
+	}
+
+	// Unstarted or completed rounds move to the previous round.
+	setRound(state.roundIndex - 1);
+}
+
 function isVotingOpen(round) {
 	return state.revealedCount >= round.guesses.length;
 }
 
 function isGuessDisabledByHint(guess) {
 	if (state.hintMode === "fifty") {
-		return guess.flag !== Correct && guess.flag !== CoinFlip;
-	}
-
-	if (state.hintMode === "monty") {
-		return guess.flag !== Correct && guess.flag !== CoinFlip && guess.flag !== MontyHall;
+		return !!guess.correct && !!guess.coinFlip;
 	}
 
 	return false;
 }
 
 function isGuessHallEliminated(guessIndex) {
-	return state.hintMode === "hall" && guessIndex === state.hallHiddenGuessIndex;
+	return state.hintMode === "hall" && state.hallHiddenGuessIndices.includes(guessIndex);
 }
 
 function handleGuessClick(event) {
@@ -590,6 +651,11 @@ function isTextEntryTarget(target) {
 	return target.isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
 }
 
+function isEnabled(btnId) {
+	const btn = ui[btnId];
+	return btn && btn.style.display != "none" && !btn.disabled && btn.style.visibility != "hidden";
+}
+
 function handleKeyDown(event) {
 	if (isTextEntryTarget(event.target)) {
 		return;
@@ -607,6 +673,36 @@ function handleKeyDown(event) {
 		}
 		event.preventDefault();
 		stepGuess(-1);
+		return;
+	}
+
+	if (event.key === "ArrowDown" && isEnabled("prevRoundBtn")) {
+		event.preventDefault();
+		moveToPreviousRound(event);
+		return;
+	}
+
+	if (event.key === "ArrowUp" && isEnabled("nextRoundBtn")) {
+		event.preventDefault();
+		moveToNextRound(event);
+		return;
+	}
+
+	if (event.key === "r" && isEnabled("revealBtn")) {
+		event.preventDefault();
+		revealCorrect();
+		return;
+	}
+
+	if (event.key === "m" && isEnabled("montyHallBtn")) {
+		event.preventDefault();
+		handleMontyHallClick();
+		return;
+	}
+
+	if (event.key === "f" && isEnabled("5050Btn")) {
+		event.preventDefault();
+		applyFiftyFifty();
 		return;
 	}
 
@@ -705,17 +801,17 @@ function render() {
 		if (idx === state.activeGuessIndex) {
 			classes.push("active");
 		}
-		if (state.revealedCorrect && guess.flag === Correct) {
+		if (state.revealedCorrect && guess.correct) {
 			classes.push("correct");
 		}
-		if (state.revealedCorrect && guess.flag !== Correct) {
+		if (state.revealedCorrect && !!guess.correct) {
 			classes.push("incorrect");
 		}
 		const voteCount = state.currentRoundVotes[guessIndex] || 0;
 		const stars = voteCount > 0 ? "★".repeat(voteCount) : "";
 		const revealNotes =
 			state.revealedCorrect &&
-			guess.flag === Correct &&
+			guess.correct &&
 			typeof guess.notes === "string" &&
 			guess.notes.trim().length > 0
 				? `
@@ -744,8 +840,6 @@ function render() {
 		ui.statusLabel.textContent = "Please vote! Click to add a star. Shift-click to remove one.";
 		if (state.hintMode === "fifty") {
 			ui.statusLabel.textContent = "50/50 active. Please vote! Click to add a star. Shift-click to remove one.";
-		} else if (state.hintMode === "monty") {
-			ui.statusLabel.textContent = "Monty Hall active. Vote, then press 🐐 to continue.";
 		} else if (state.hintMode === "hall") {
 			ui.statusLabel.textContent = "Hall active. You may change your vote.";
 		}
@@ -766,19 +860,22 @@ function render() {
 	ui.nextRoundBtn.disabled = false;
 	const roundInvalid = state.roundValidationErrors.length > 0;
 	const hasAnyVotes = state.currentRoundVotes.some((count) => count > 0);
+	const canUseMontyHall = canShowMontyHallButton(round);
 	ui.prevGuessBtn.disabled = roundInvalid || state.revealedCount === 0 || hasAnyVotes;
 	ui.nextGuessBtn.disabled = roundInvalid || state.revealedCount >= round.guesses.length;
-	const guessNavHidden = state.hintMode === "fifty" || state.hintMode === "monty" || state.hintMode === "hall";
+	const guessNavHidden = state.hintMode === "fifty" || state.hintMode === "hall";
 	ui.prevGuessBtn.style.visibility = guessNavHidden ? "hidden" : "visible";
 	ui.nextGuessBtn.style.visibility = guessNavHidden ? "hidden" : "visible";
+	if (state.hintMode === "hall") {
+		ui.prevGuessBtn.disabled = true;
+	}
 
-	const canAdvanceToHall = Number.isInteger(getCurrentVotedGuessIndex());
 	if (ui.fiftyFiftyBtn) {
 		ui.fiftyFiftyBtn.disabled = state.hintMode !== "none" || hasAnyVotes;
 	}
 	if (ui.montyHallBtn) {
-		ui.montyHallBtn.textContent = state.hintMode === "monty" ? "🐐" : "🚪";
-		ui.montyHallBtn.disabled = state.hintMode === "monty" ? !canAdvanceToHall : state.hintMode === "hall" || hasAnyVotes;
+		ui.montyHallBtn.textContent = "🚪";
+		ui.montyHallBtn.disabled = state.hintMode === "hall" || !canUseMontyHall;
 	}
 	if (!allShown) {
 		if (state.revealShowTimer !== null) {
@@ -803,7 +900,7 @@ function render() {
 			ui.fiftyFiftyBtn.style.visibility = state.hintMode === "none" ? "visible" : "hidden";
 		}
 		if (ui.montyHallBtn) {
-			ui.montyHallBtn.style.visibility = state.hintMode === "hall" ? "hidden" : "visible";
+			ui.montyHallBtn.style.visibility = canUseMontyHall || state.hintMode === "hall" ? "visible" : "hidden";
 		}
 	}
 	ui.revealBtn.disabled = state.revealedCorrect;

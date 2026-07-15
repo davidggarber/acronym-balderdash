@@ -4,17 +4,15 @@ addRound(document.currentScript, {
         {
             definition: "Local Interpretation of National Standards",
             author: "",
-            flag: Correct,
+            correct: true,
         },
         {
             definition: "",
             author: "",
-            flag: CoinFlip,
         },
         {
             definition: "",
             author: "",
-            flag: MontyHall,
         },
         {
             definition: "",
