@@ -39,7 +39,7 @@ body {
         radial-gradient(70vw 45vh at 90% 0%, rgba(44, 127, 201, 0.2), transparent 45%),
         var(--bg);
     color: var(--text);
-    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-family: "Amaranth", serif;
     display: flex;
     justify-content: center;
     padding: 16px;
@@ -229,12 +229,14 @@ button:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-inline-start: 1em;
+    padding-inline-end: 1em;
 }
 
 .guess-votes {
     margin: 0;
     text-align: center;
-    font-size: 1.25rem;
+    font-size: 2.5rem;
     min-height: 1.4em;
     letter-spacing: 0.15em;
 }

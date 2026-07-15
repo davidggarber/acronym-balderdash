@@ -808,7 +808,7 @@ function render() {
 			classes.push("incorrect");
 		}
 		const voteCount = state.currentRoundVotes[guessIndex] || 0;
-		const stars = voteCount > 0 ? "★".repeat(voteCount) : "";
+		const stars = voteCount > 0 ? "☆".repeat(voteCount) : "";  // ★
 		const revealNotes =
 			state.revealedCorrect &&
 			guess.correct &&
