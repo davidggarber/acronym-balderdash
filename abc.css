@@ -136,6 +136,8 @@ button:disabled {
     gap: 10px;
     align-content: start;
     min-height: 50vh;
+    overflow: hidden;
+    overflow: clip;
 }
 
 .guess-card {

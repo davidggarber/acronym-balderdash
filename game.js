@@ -39,6 +39,31 @@ const experiments = {
 	montyHall: true,
 }
 
+const runtime = {
+	isMobileDevice: false,
+};
+
+function detectMobileDevice() {
+	if (navigator.userAgentData && navigator.userAgentData.mobile) {
+		return true;
+	}
+
+	const ua = navigator.userAgent || "";
+	const mobileUa = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+	const coarsePointer = typeof window.matchMedia === "function" && window.matchMedia("(any-pointer: coarse)").matches;
+	const narrowViewport = typeof window.matchMedia === "function" && window.matchMedia("(max-width: 820px)").matches;
+	return mobileUa || (coarsePointer && narrowViewport);
+}
+
+function applyDefaultRoundReveal(round) {
+	if (!round || !runtime.isMobileDevice) {
+		return;
+	}
+
+	state.revealedCount = round.guesses.length;
+	state.activeGuessIndex = -1;
+}
+
 function getRoundCount() {
 	return Array.isArray(rounds) ? rounds.length : 0;
 }
@@ -305,8 +330,11 @@ function validateRound(round) {
 		errors.push("Round title/acronym is empty.");
 	}
 
-	if (!Array.isArray(round?.guesses) || round.guesses.length < 3) {
-		errors.push("Round must contain at least 3 guesses.");
+	if (!Array.isArray(round?.guesses) || round.guesses.length < 4) {
+		errors.push("Round must contain at least 4 guesses.");
+	}
+	if (round?.guesses && round.guesses.length > 6) {
+		errors.push("Round must contain at most 6 guesses.");
 	}
 
 	if (Array.isArray(round?.guesses)) {
@@ -355,6 +383,7 @@ function setRound(nextIndex) {
 	if (state.roundValidationErrors.length > 0) {
 		console.error(`Round ${state.roundIndex + 1} is invalid: ${state.roundValidationErrors.join(" ")}`);
 	}
+	applyDefaultRoundReveal(getCurrentRound());
 	saveState();
 	render();
 }
@@ -551,6 +580,7 @@ function restartCurrentRound() {
 	if (state.roundValidationErrors.length > 0) {
 		console.error(`Round ${state.roundIndex + 1} is invalid: ${state.roundValidationErrors.join(" ")}`);
 	}
+	applyDefaultRoundReveal(round);
 	saveState();
 	render();
 }
@@ -908,6 +938,7 @@ function render() {
 
 function init() {
 	cacheUi();
+	runtime.isMobileDevice = detectMobileDevice();
 	loadState();
 	commitPendingRoundVotesToStatistics();
 	clearPendingRoundState();
