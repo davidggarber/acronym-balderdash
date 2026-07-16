@@ -169,10 +169,10 @@ function cacheUi() {
 	ui.nextGuessBtn = document.getElementById("nextGuessBtn");
 	ui.revealBtn = document.getElementById("revealBtn");
 	if (experiments.fiftyFifty) {
-		ui.fiftyFiftyBtn = document.getElementById("5050Btn");
+		ui.fiftyFiftyBtn = document.getElementById("fiftyBtn");
 	}
 	else {
-		document.getElementById("5050Btn").style.display = "none";
+		document.getElementById("fiftyBtn").style.display = "none";
 	}
 	if (experiments.montyHall) {
 		ui.montyHallBtn = document.getElementById("montyHallBtn");
@@ -192,16 +192,18 @@ function forEachRevealGroupButton(callback) {
 
 function setRevealGroupHidden() {
 	forEachRevealGroupButton((btn) => {
-		btn.style.visibility = "hidden";
 		btn.classList.remove("reveal-visible");
 	});
 }
 
 function setRevealGroupVisible() {
 	forEachRevealGroupButton((btn) => {
-		btn.style.visibility = "visible";
 		btn.classList.add("reveal-visible");
 	});
+}
+
+function isRevealGroupButton(btn) {
+	return btn === ui.revealBtn || btn === ui.fiftyFiftyBtn || btn === ui.montyHallBtn;
 }
 
 function bindEvents() {
@@ -209,12 +211,12 @@ function bindEvents() {
 	ui.nextRoundBtn.addEventListener("click", (event) => moveToNextRound(event));
 	ui.prevGuessBtn.addEventListener("click", () => stepGuess(-1));
 	ui.nextGuessBtn.addEventListener("click", () => stepGuess(1));
-	ui.revealBtn.addEventListener("click", revealCorrect);
+	ui.revealBtn.addEventListener("click", (event) => revealCorrect(event));
 	if (ui.fiftyFiftyBtn) {
-		ui.fiftyFiftyBtn.addEventListener("click", applyFiftyFifty);
+		ui.fiftyFiftyBtn.addEventListener("click", (event) => applyFiftyFifty(event));
 	}
 	if (ui.montyHallBtn) {
-		ui.montyHallBtn.addEventListener("click", handleMontyHallClick);
+		ui.montyHallBtn.addEventListener("click", (event) => handleMontyHallClick(event));
 	}
 	ui.guessGrid.addEventListener("click", handleGuessClick);
 	document.addEventListener("keydown", handleKeyDown);
@@ -413,7 +415,7 @@ function stepGuess(direction) {
 	render();
 }
 
-function applyFiftyFifty() {
+function applyFiftyFifty(triggerEvent) {
 	const round = getCurrentRound();
 	if (!round || !isVotingOpen(round)) {
 		return;
@@ -511,7 +513,7 @@ function getCorrectIndex(round) {
 	return round.guesses.findIndex((guess) => guess.correct);
 }
 
-function revealCorrect() {
+function revealCorrect(triggerEvent) {
 	const round = getCurrentRound();
 	if (!round) {
 		return;
@@ -683,7 +685,15 @@ function isTextEntryTarget(target) {
 
 function isEnabled(btnId) {
 	const btn = ui[btnId];
-	return btn && btn.style.display != "none" && !btn.disabled && btn.style.visibility != "hidden";
+	if (!btn || btn.style.display == "none" || btn.disabled || btn.style.visibility == "hidden") {
+		return false;
+	}
+
+	if (isRevealGroupButton(btn) && !btn.classList.contains("reveal-visible")) {
+		return false;
+	}
+
+	return true;
 }
 
 function handleKeyDown(event) {
@@ -719,20 +729,20 @@ function handleKeyDown(event) {
 	}
 
 	if (event.key === "r" && isEnabled("revealBtn")) {
-		event.preventDefault();
+		event.preventDefault(event);
 		revealCorrect();
 		return;
 	}
 
 	if (event.key === "m" && isEnabled("montyHallBtn")) {
 		event.preventDefault();
-		handleMontyHallClick();
+		handleMontyHallClick(event);
 		return;
 	}
 
-	if (event.key === "f" && isEnabled("5050Btn")) {
+	if (event.key === "f" && isEnabled("fiftyBtn")) {
 		event.preventDefault();
-		applyFiftyFifty();
+		applyFiftyFifty(event);
 		return;
 	}
 
