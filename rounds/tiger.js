@@ -2,7 +2,7 @@ addRound(document.currentScript, {
     acronym: "TIGER",
     guesses: [
         {
-            definition: "The Internet Gateway and E-Mail Router",
+            definition: "The Internet Gateway and E‑Mail Router",
             author: "",
             correct: true,
         },

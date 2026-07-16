@@ -24,7 +24,7 @@ addRound(document.currentScript, {
             author: "",
         },
         {
-            definition: "Behind Every Agent Resides a Sub-agent",
+            definition: "Behind Every Agent Resides a Sub‑agent",
             author: "",
         }
     ]

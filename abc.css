@@ -231,6 +231,9 @@ button:disabled {
     justify-content: center;
     padding-inline-start: 1em;
     padding-inline-end: 1em;
+    white-space: normal;
+    overflow-wrap: none;
+    word-break: auto-phrase;
 }
 
 .guess-votes {

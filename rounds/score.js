@@ -5,7 +5,7 @@ addRound(document.currentScript, {
             definition: "Service Corps Of Retired Executives",
             author: "",
             correct: true,
-            notes: "A business mentoring non-profit",
+            notes: "A business mentoring non‑profit",
         },
         {
             definition: "",

@@ -16,7 +16,7 @@ addRound(document.currentScript, {
             author: "Stephanie H",
         },
         {
-            definition: "My Only Regret: Sealing Envelopes",
+            definition: "Modern Overlay Reverse Semaphore Encryption",
             author: "Rorke H",
         },
         {

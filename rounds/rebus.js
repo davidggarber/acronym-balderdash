@@ -24,7 +24,7 @@ addRound(document.currentScript, {
             author: "Tejas W",
         },
         {
-            definition: "Random Elvish Babble Under-Study",
+            definition: "Random Elvish Babble Under‑Study",
             author: "David G",
         }
     ]
