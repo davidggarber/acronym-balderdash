@@ -277,6 +277,8 @@ button:disabled {
     border-color: color-mix(in srgb, var(--guess-4) 75%, white);
     animation: reveal 480ms ease;
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--guess-4) 25%, transparent);
+    filter: saturate(5);
+
 }
 
 .guess-card.incorrect {

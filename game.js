@@ -804,7 +804,7 @@ function render() {
 		if (state.revealedCorrect && guess.correct) {
 			classes.push("correct");
 		}
-		if (state.revealedCorrect && !!guess.correct) {
+		if (state.revealedCorrect && !guess.correct) {
 			classes.push("incorrect");
 		}
 		const voteCount = state.currentRoundVotes[guessIndex] || 0;
