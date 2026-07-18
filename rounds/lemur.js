@@ -24,8 +24,8 @@ addRound(document.currentScript, {
             author: "Mom and kids (Team 25)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Leftovers Everyone Makes Use Refrigeration",
+            author: "Halle (Staff)",
         }
     ]
 });
