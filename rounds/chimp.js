@@ -8,20 +8,20 @@ addRound(document.currentScript, {
             notes: "Small group based in Seattle, WA"
         },
         {
-            definition: "",
-            author: "",
+            definition: "Challenge Having Immense Monkey Power",
+            author: "The Inconsiderable Rabbits (Team 57)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Council for Historic and International Monument Protection",
+            author: "Microfolx (Team 23)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "College of History, Machines, and Patriotism",
+            author: "Puzzlemaxxing (Team 37)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Classic Heavy Iron Metal Prong",
+            author: "Peter G (Staff)",
         },
         {
             definition: "",
