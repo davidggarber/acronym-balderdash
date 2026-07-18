@@ -8,23 +8,23 @@ addRound(document.currentScript, {
             notes: "Unix group in Belgium",
         },
         {
-            definition: "",
+            definition: "Island‑Grade Umbrella And Nautical Accessories",
             author: "",
         },
         {
-            definition: "",
+            definition: "Interspecies Grooming Unit And Nail‑Art Atelier",
             author: "",
         },
         {
-            definition: "",
+            definition: "Inter‑Guild Unit for Arboreal Nesting & Ascent",
             author: "",
         },
         {
-            definition: "",
+            definition: "Invasive‑Species Guard Unit Advancing Native Animals",
             author: "",
         },
         {
-            definition: "",
+            definition: "Intelligent Geospatial Unit for Aerial Navigation Assistance",
             author: "",
         }
     ]

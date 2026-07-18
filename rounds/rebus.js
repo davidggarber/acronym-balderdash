@@ -24,8 +24,8 @@ addRound(document.currentScript, {
             author: "Tejas W",
         },
         {
-            definition: "Random Elvish Babble Under‑Study",
-            author: "David G",
+            definition: "Ridiculously Elaborate Blueprint for Unnecessary Symbolism",
+            author: "Copilot",
         }
     ]
 });

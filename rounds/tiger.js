@@ -2,8 +2,8 @@ addRound(document.currentScript, {
     acronym: "TIGER",
     guesses: [
         {
-            definition: "The Internet Gateway and E‑Mail Router",
-            author: "",
+            definition: "Transportation Investment Generating Economic Recovery",
+            author: "A type of federal grant",
             correct: true,
         },
         {

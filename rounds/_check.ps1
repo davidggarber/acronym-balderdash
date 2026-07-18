@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..')
 $roundsDir = Join-Path $repoRoot 'rounds'
 $htmlFiles = @(
-	(Join-Path $repoRoot 'abc.html'),
+	(Join-Path $repoRoot 'index.html'),
 	(Join-Path $repoRoot 'favorites.html')
 )
 
