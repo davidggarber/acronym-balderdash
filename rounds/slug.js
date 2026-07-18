@@ -8,24 +8,24 @@ addRound(document.currentScript, {
             notes: "In real estate listings",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Slippery Lives Under Ground",
+            author: "Jen T (Staff)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Seattle Lego Users Group",
+            author: "Tejas W (Staff)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Standard Load Under Gravity",
+            author: "Team 59",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Scientific Lossless Universal Gadget",
+            author: "Team 47",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Solid Lattice of Uranium Grains",
+            author: "Ian Elsbree (Staff)",
         }
     ]
 });
