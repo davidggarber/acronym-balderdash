@@ -20,7 +20,7 @@ addRound(document.currentScript, {
             author: "Josh (Team 49)",
         },
         {
-            definition: "International Business  Export",
+            definition: "International Business Export",
             author: "Radwan - Ignore Previous Instructions (Team 17)",
         },
         {
