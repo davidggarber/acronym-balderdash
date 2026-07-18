@@ -8,24 +8,24 @@ addRound(document.currentScript, {
             notes: "A photo‑metric tool for measuring the redshift of other galaxies"
         },
         {
-            definition: "",
-            author: "",
+            definition: "Zoological Educational Beast Resting Area",
+            author: "Gwen (Staff)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Zero Emission Bus route for All",
+            author: "Brian (Staff)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Zwitterion Emitting Boron Ray Apparatus",
+            author: "Nathan (Staff)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Zero Emission Boosted Road Acceleration",
+            author: "David (Staff)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Zesty Everlasting Brother Rotting Action",
+            author: "Stephanie (Staff)",
         }
     ]
 });
