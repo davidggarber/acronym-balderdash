@@ -24,8 +24,8 @@ addRound(document.currentScript, {
             author: "The Brute Squad (Team 46)",
         },
         {
-            definition: "Forceful Outdoor Retirement Group",
-            author: "Halle (Staff)",
+            definition: "Famous Realtime Original Game",
+            author: "Team 21",
         }
     ]
 });
