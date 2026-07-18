@@ -8,24 +8,24 @@ addRound(document.currentScript, {
             notes: "Open source software",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Multiple Orbital Objects Striking Earth",
+            author: "Spice E. Meatball (Team 42)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Mostly Obsolete Over Safe Engineering",
+            author: "Meher - Ctrl+Alt+Solve​ (Team 9)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Microsoft Office of Silly Events",
+            author: "Puzzle Busters 2 (Team 34)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Mystical Organs of Surgical Enlargements",
+            author: "Cracked Turtles (Team 8)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Minimally Opulent and Ostentatious Superhero Effigy",
+            author: "Nicolas (Team 44)",
         }
     ]
 });
