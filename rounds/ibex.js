@@ -12,7 +12,7 @@ addRound(document.currentScript, {
             author: "Dark eyed Juncos find stamps in the under dimension (Team 11)",
         },
         {
-            definition: "Iternational Benchmark Evaluating X-Rays",
+            definition: "International Benchmark Evaluating X-Rays",
             author: "Sardines (Team 40)",
         },
         {
