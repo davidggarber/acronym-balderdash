@@ -8,24 +8,24 @@ addRound(document.currentScript, {
             notes: "The name of language labs at universities including Purdue and Trier",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Live Long And Manage Anger",
+            author: "Roy (Team 13)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Large Language Agentic Model Alignment",
+            author: "Zella (Staff)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Large Language Antagonistic Machine Adversary",
+            author: "Local Honey (Team 20)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Large Liability Against Microsoft Azure",
+            author: "Puzzle Me This, Batman! (Team 36)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Large Language And Model AI",
+            author: "Clue Crew (Team 7)",
         }
     ]
 });
