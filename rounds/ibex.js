@@ -8,24 +8,24 @@ addRound(document.currentScript, {
             notes: "NASA Satellite",
         },
         {
-            definition: "",
-            author: "",
+            definition: "International Birding Exam",
+            author: "Dark eyed Juncos find stamps in the under dimension (Team 11)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Iternational Benchmark Evaluating X-Rays",
+            author: "Sardines (Team 40)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "I Believe in Eating Xantham gum",
+            author: "Josh (Team 49)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "International Bussiness Export",
+            author: "Radwan - Ignore Previous Instructions (Team 17)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Imported Bunch of Excessive Xanax",
+            author: "Mariah (Staff)",
         }
     ]
 });
