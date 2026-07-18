@@ -16,7 +16,7 @@ addRound(document.currentScript, {
             author: "Sardines (Team 40)",
         },
         {
-            definition: "I Believe in Eating Xantham gum",
+            definition: "I Believe in Eating Xanthan gum",
             author: "Josh (Team 49)",
         },
         {
