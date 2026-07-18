@@ -12,7 +12,7 @@ addRound(document.currentScript, {
             author: "Gwen (Staff)",
         },
         {
-            definition: "Zero Emission Bus route for All",
+            definition: "Zero Emission Bus Route for All",
             author: "Brian (Staff)",
         },
         {
