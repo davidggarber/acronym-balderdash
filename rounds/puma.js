@@ -8,23 +8,23 @@ addRound(document.currentScript, {
             notes: "An industrial robot arm",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Properly Useless Microsoft Assistant",
+            author: "Puzzling, My Dear Watson (Team 39)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Particle-Using Magnetic Accelerator",
+            author: "Winston (Team 33)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Proud Understated Mammal Alert",
+            author: "SINS (Team 41)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Pennsylvania University Masters Association",
+            author: "Mikelle (Team 50)",
         },
         {
-            definition: "",
+            definition: "Pacific Underwater Machinery Association",
             author: "",
         }
     ]
