@@ -24,7 +24,7 @@ addRound(document.currentScript, {
             author: "Puzzlenauts (Team 38)",
         },
         {
-            definition: "Caught Offside by Referee's Accident",
+            definition: "Caught Offside By Referee's Accident",
             author: "Friendly Hippos (Team 14)",
         }
     ]
