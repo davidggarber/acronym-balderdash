@@ -2,7 +2,7 @@ addRound(document.currentScript, {
     acronym: "LIONS",
     guesses: [
         {
-            definition: "Local Interpretation of National Standards",
+            definition: "Local Interpretation Of National Standards",
             author: "",
             correct: true,
             notes: "The process of modifying national or international standards to fit local needs and conditions",
