@@ -8,7 +8,7 @@ addRound(document.currentScript, {
             notes: "a Brooklyn‑based group of artists and technologists",
         },
         {
-            definition: "Let Everyone Make up Responses",
+            definition: "Let Everyone Make Up Responses",
             author: "Maidap (Team 22)",
         },
         {
