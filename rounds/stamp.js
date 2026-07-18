@@ -25,7 +25,7 @@ addRound(document.currentScript, {
         },
         {
             definition: "Strategic Task Alignment & Management Portal",
-            author: "Tejas",
+            author: "Tejas W",
         },
     ]
 });

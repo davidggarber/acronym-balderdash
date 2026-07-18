@@ -2,7 +2,7 @@ addRound(document.currentScript, {
     acronym: "SAFARI",
     guesses: [
         {
-            definition: "Stray and Feral Animal Rescue Initiative",
+            definition: "Stray And Feral Animal Rescue Initiative",
             author: "",
             correct: true,
             notes: "An animal group in DeKalb, Illinois"

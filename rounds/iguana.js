@@ -12,7 +12,7 @@ addRound(document.currentScript, {
             author: "",
         },
         {
-            definition: "Interspecies Grooming Unit And Nail‑Art Atelier",
+            definition: "Interspecies Grooming Unit And Nail‑art Atelier",
             author: "",
         },
         {
@@ -20,7 +20,7 @@ addRound(document.currentScript, {
             author: "",
         },
         {
-            definition: "Invasive‑Species Guard Unit Advancing Native Animals",
+            definition: "Invasive‑species Guard Unit Advancing Native Animals",
             author: "",
         },
         {

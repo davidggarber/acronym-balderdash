@@ -3,8 +3,9 @@ addRound(document.currentScript, {
     guesses: [
         {
             definition: "Transportation Investment Generating Economic Recovery",
-            author: "A type of federal grant",
+            author: "",
             correct: true,
+            notes: "A type of federal grant",
         },
         {
             definition: "Territorial Instincts Guiding Every Roar",
