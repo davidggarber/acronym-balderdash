@@ -16,11 +16,11 @@ addRound(document.currentScript, {
             author: "Meher - Ctrl+Alt+Solve​ (Team 9)",
         },
         {
-            definition: "Microsoft Office of Silly Events",
+            definition: "Microsoft Office Of Silly Events",
             author: "Puzzle Busters 2 (Team 34)",
         },
         {
-            definition: "Mystical Organs of Surgical Enlargements",
+            definition: "Mystical Organs Of Surgical Enlargements",
             author: "Cracked Turtles (Team 8)",
         },
         {
