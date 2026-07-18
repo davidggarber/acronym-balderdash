@@ -8,20 +8,20 @@ addRound(document.currentScript, {
             notes: "a Brooklyn‑based group of artists and technologists",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Let Everyone Make up Responses",
+            author: "Maidap (Team 22)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Large Elephant Made Under Radioactivity",
+            author: "Team Loopy (Team 45)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Literary Educators Make Undergraduates Read",
+            author: "Marli (Team 24)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Leave Endangered Mammals Under Radar",
+            author: "Mom and kids (Team 25)",
         },
         {
             definition: "",
