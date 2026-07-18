@@ -1,5 +1,5 @@
 addRound(document.currentScript, {
-    acronym: "",
+    acronym: "COBRA",
     guesses: [
         {
             definition: "Consolidated Omnibus Budget Reconciliation Act",
@@ -8,24 +8,24 @@ addRound(document.currentScript, {
             notes: "The 1985 law that allows ex‑employees to continue health insurance",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Covert Operation By Rebellious Assistants",
+            author: "PANANDAGRAMS (Team 30)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Closed Operation Basic Resource Allocation",
+            author: "Wizards (Team 54)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Corporate Organization of British Racers Association",
+            author: "Sid (Team 52)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Creative Organization for Belief and Religious Arts",
+            author: "Puzzlenauts (Team 38)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Caught Offside by Referee's Accident",
+            author: "Friendly Hippos (Team 14)",
         }
     ]
 });
