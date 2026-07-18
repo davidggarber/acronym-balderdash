@@ -5,7 +5,7 @@ addRound(document.currentScript, {
             definition: "Ferry Riders Opinion Group",
             author: "",
             correct: true,
-            notes: "",
+            notes: "Opinion group for WA state ferry riders",
         },
         {
             definition: "",
