@@ -13,7 +13,7 @@ addRound(document.currentScript, {
         },
         {
             definition: "Riddle Embedding Broadly Understood Symbols",
-            author: "Chris J",
+            author: "Chris J (Staff)",
         },
         {
             definition: "Recumbent Electric Bicyclists of the United States",

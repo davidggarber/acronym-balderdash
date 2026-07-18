@@ -9,23 +9,23 @@ addRound(document.currentScript, {
         },
         {
             definition: "Meeting Of Really Smart Employees",
-            author: "Tejas W",
+            author: "Tejas W (Staff)",
         },
         {
             definition: "Most Offered Return Super Employee",
-            author: "Stephanie H",
+            author: "Stephanie H (Staff)",
         },
         {
             definition: "Modern Overlay Reverse Semaphore Encryption",
-            author: "Rorke H",
+            author: "Rorke H (Staff)",
         },
         {
             definition: "Mob Of Romanian Speakers of English",
-            author: "Steve M",
+            author: "Steve M (Staff)",
         },
         {
             definition: "Most Original Really Simple Encoding",
-            author: "Chris J",
+            author: "Chris J (Staff)",
         }
     ]
 });
