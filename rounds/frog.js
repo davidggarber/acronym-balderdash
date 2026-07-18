@@ -24,8 +24,8 @@ addRound(document.currentScript, {
             author: "The Brute Squad (Team 46)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Forceful Outdoor Retirement Group",
+            author: "Halle (Staff)",
         }
     ]
 });
