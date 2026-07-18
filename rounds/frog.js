@@ -8,20 +8,20 @@ addRound(document.currentScript, {
             notes: "Opinion group for WA state ferry riders",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Foreign Renaissance Old Gallery",
+            author: "Joe (Team 26)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Fireproof Roof Octagonal Gutter",
+            author: "NCP Hunters (Team 27)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Fully Robo Operated Grasshopper",
+            author: "IJKLNOPQRUVWXYZBCDFGH So Meta Even This Acronym (Team 18)",
         },
         {
-            definition: "",
-            author: "",
+            definition: "Free Run Outdoor Game",
+            author: "The Brute Squad (Team 46)",
         },
         {
             definition: "",
